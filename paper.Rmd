@@ -8,11 +8,8 @@ output:
     includes:  
       in_header: latex-figure-floats.tex
 bibliography: references.bib
-
+urlcolor: blue
 ---
-
-
-
 
 ```{r setup, include=FALSE}
 # sim objects
@@ -29,9 +26,9 @@ library(dplyr)
 ```
 
 # Introduction
-In clinical psychology, and in many other fields, linear mixed-effects models (LMMs) have quickly risen in popularity during the 21st century [@gueorguieva_move_2004]. Their usage in clincal psychology is often motivated by LMMs ability to include participants with missing data [e.g., @kahn_multilevel_2011]. However, LMMs are highly sensitive to some types of model misspecification [@kwok_impact_2007], and investigators are faced with many modelling choices, or researchers degrees of freedom [@wicherts_degrees_2016]. When analyzing patients that have been repeatedy measured during a treatment, investigators must decide wheter to model subjects' change over time as fixed or varying (random). The issues of treating and effect as constant for all individuals (fixed), or as varying between individuals (random), goes back a long time. For instance, in linguistics @clark_language-as-fixed-effect_1973 coined the term "language-as-fixe-effect fallcy", and @martindale_therapist-as-fixed-effect_1978 soon followed by pointing out the unreanable assumption that therapists have excactly the same sucess with their patients ("therapist-as-a-fixed-effect fallacy"). In an influentian simulation study @barr_random_2013 recommended to "keep it maximal", i.e. include as many random effects as possible. Others [e.g., @matuschek_balancing_2017] have noted that keeping it maximal might be too conservative, and that investigators need to balance the risk of Type I or II errors.  
+In clinical psychology, and in many other fields, linear mixed-effects models (LMMs) have quickly risen in popularity during the 21st century [@gueorguieva_move_2004]. Their usage in clinical psychology is often motivated by LMMs ability to include participants with missing data [e.g., @kahn_multilevel_2011]. However, LMMs are highly sensitive to some types of model misspecification [@kwok_impact_2007], and investigators are faced with many modelling choices, or researchers degrees of freedom [@wicherts_degrees_2016]. When analyzing patients that have been repeatedly measured during a treatment, investigators must decide whether to model subjects' change over time as fixed or varying (random). The issues of treating and effect as constant for all individuals (fixed), or as varying between individuals (random), goes back a long time. For instance, in linguistics @clark_language-as-fixed-effect_1973 coined the term "language-as-fixed-effect fallacy", and @martindale_therapist-as-fixed-effect_1978 soon followed by pointing out the unreasonable assumption that therapists have exactly the same success with their patients ("therapist-as-a-fixed-effect fallacy"). In an influential simulation study @barr_random_2013 recommended to "keep it maximal", i.e. include as many random effects as possible. Others [e.g., @matuschek_balancing_2017] have noted that keeping it maximal might be too conservative, and that investigators need to balance the risk of Type I or II errors.  
 
-In this paper we will focus on one of the most basic decisions an analyst must make, when analyzing longitudinal treatment data---whether subjects' trajectories over time should be seen as an fixed or random effect. Specifically, this paper fouces on the consequence of ignoring subject-spefic varying slopes, on both Type I and II errors.
+In this paper we will focus on one of the most basic decisions an analyst must make, when analyzing longitudinal treatment data---whether subjects' trajectories over time should be seen as an fixed or random effect. Specifically, this paper focuses on the consequence of ignoring subject-specif varying slopes, on both Type I and II errors.
 
 # Methods
 
@@ -70,9 +67,9 @@ The parameter if interest is $\gamma_{11}$, which is the mean difference in chan
 
 
 ## Simulation
-  To investigated the impact of wrongly omitting a random slope on the risk of comitting a Type I error, a Monte Carlo simulation was performed. A parallel group RCT with 11 weekly time points was assumed, with 50 participants in each treatment group. We also assumed that at baseline there was an equal amount of variance between and within subjects, which would translate to an intraclass correlation of 0.5, if there was no variation between subjets in change over time,  $\sigma_{u_1}^2 = 0$. The simulation consistent of comparing 5 different amounts of random slope variance, $\sigma_{u_1}^2/\sigma^2 = \{0, 0.01, 0.02, 0.03, 0.04\}$. We write the sloep variance as a fraction of the error variance, since its the ratio that matters, not the absolute value of, $\sigma_{u_1}^2$.\footnote{Here I use the famous proof: "proof is left as an excercise to the reader", or "It can easily be shown that..." ;)} 
+  To investigated the impact of wrongly omitting a random slope on the risk of committing a Type I error, a Monte Carlo simulation was performed. A parallel group RCT with 11 weekly time points was assumed, with 50 participants in each treatment group. We also assumed that at baseline there was an equal amount of variance between and within subjects, which would translate to an intraclass correlation of 0.5, if there was no variation between subjects in change over time,  $\sigma_{u_1}^2 = 0$. The simulation consistent of comparing 5 different amounts of random slope variance, $\sigma_{u_1}^2/\sigma^2 = \{0, 0.01, 0.02, 0.03, 0.04\}$. We write the slope variance as a fraction of the error variance, since its the ratio that matters, not the absolute value of, $\sigma_{u_1}^2$.\footnote{Here I use the famous proof: "proof is left as an exercise to the reader", or "It can easily be shown that..." ;)} 
 
-Power was calculated for the same model, assuming a Cohen's *d* of 0.5 (standardized using the pretest standard deviation). Simulations and power calculations were done in R [version 3.4.3; @r_core_team_r:_2017], using *powerlmm* [version 0.2.0; @magnusson_powerlmm:_2018]. LMMs were fit with *lme4* [version 1.1-15; @bates_fitting_2015], using restricted maximum likelihood estimation. For each model 5000 data sets were generated, resulting in a 95 % Monte Carlo CI of 0.044--0.056, for a nominal $\alpha$ of 0.05, and 
+Power was calculated for the same model, assuming a Cohen's *d* of 0.5 (standardized using the pretest standard deviation). Simulations and power calculations were done in R [version 3.4.3; @r_core_team_r:_2017], using *powerlmm* [version 0.2.0; @magnusson_powerlmm:_2018]. LMMs were fit with *lme4* [version 1.1-15; @bates_fitting_2015], using restricted maximum likelihood estimation. For each model 5000 data sets were generated, resulting in a 95 % Monte Carlo CI of 0.044--0.056, for a nominal $\alpha$ of 0.05. Simulation code and additional material is available at: [https://github.com/rpsychologist/open-science-exam](https://github.com/rpsychologist/open-science-exam).
 
 # Results
 
@@ -137,8 +134,8 @@ plot(pcurve) +
 
 
 # Discussion
-Even if som model selection could be used, to select the most parsimonus model, investigators must still decide wheter the test should be sensitive to detect relevant diferences even if random slopes are included. Our recommondetation is that researchers assume participants will change differently during a treatment trial, and include enough participants so that the statistical tests will not miss clinicalyl relevant effects even under moderate to large amounts of heterogeinty in change. To facilitite this we encourage authors to actually report these variance components, so that some kind of reference point is avaiable.
+Even if some model selection could be used, to select the most parsimonious model, investigators must still decide whether the test should be sensitive to detect relevant differences even if random slopes are included. Our recommendation is that researchers assume participants will change differently during a treatment trial, and include enough participants so that the statistical tests will not miss clinically relevant effects even under moderate to large amounts of heterogeneity in change. To facilitate this we encourage authors to actually report these variance components, so that some kind of reference point is available.
 
-Lastly, our simulation showed that ignoring even small amounts of slopes variance can substantially inflate the Type I errors. Hence, we think it is reasnoable that investigators who concider a random intrecept-only model a reasonable choice, provide sufficient evidence for this asummption.
+Lastly, our simulation showed that ignoring even small amounts of slopes variance can substantially inflate the Type I errors. Hence, we think it is reasonable that investigators who consider a random intercept-only model a reasonable choice, provide sufficient evidence for this assumption.
 
 # References
