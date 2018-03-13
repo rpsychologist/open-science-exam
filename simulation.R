@@ -1,11 +1,6 @@
 
 # Packages ----------------------------------------------------------------
 library(powerlmm)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-
-
 
 # Setup -------------------------------------------------------------------
 p <- study_parameters(n1 = 11, 
