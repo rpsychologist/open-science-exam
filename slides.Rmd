@@ -41,8 +41,8 @@ dsc_pos <- simulate_data(update(p, var_ratio = 0.02, cor_subject = 0.9))
 ## Introduction
 * In clinical psychology patients are often repeatedly measured during the treatment period.
 * The data are usually analyzed using linear mixed-effects models (LMMs).
-* Researchers face many degrees of freedoms.
-* Modeling choices influence both Type I and II errors.
+* Researchers have many choices to make (researchers degrees of freedom)
+* These modeling choices influence both Type I and II errors.
 
 ## Aim
 * Investigate the consequences of ignoring a random slope on:
