@@ -7,8 +7,10 @@ output:
   bookdown::pdf_document2:
     includes:  
       in_header: latex-figure-floats.tex
-    toc: false  
+    toc: false
 bibliography: references.bib
+fontsize: 12pt
+geometry: margin=1in
 urlcolor: blue
 ---
 
