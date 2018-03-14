@@ -2,7 +2,7 @@
 title: "The patient-as-fixed-effect fallacy"
 subtitle: "Consequences for statistical power and Type I errors"
 author: "Kristoffer Magnusson"
-date: "14 Mars 2018 | Examination for the course: 'Open science and reproducible research'"
+date: "16 Mars 2018 | Examination for the course: 'Open science and reproducible research'"
 output: 
     revealjs::revealjs_presentation:
         theme: white
