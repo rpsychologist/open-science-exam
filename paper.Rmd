@@ -2,7 +2,7 @@
 title: "The patient-as-fixed-effect fallacy: Consequences for statistical power and Type I errors"
 subtitle: "Examination for the course: 'Open science and reproducible research'"
 author: "Kristoffer Magnusson"
-date: "March 13, 2018"
+date: "March 14, 2018"
 output: 
   bookdown::pdf_document2:
     includes:  
@@ -29,9 +29,9 @@ library(dplyr)
 ```
 
 # Introduction
-In clinical psychology, and in many other fields, linear mixed-effects models (LMMs) have quickly risen in popularity during the 21st century [@gueorguieva_move_2004]. Their usage in clinical psychology is often motivated by LMMs' ability to include participants with missing data [e.g., @kahn_multilevel_2011]. However, LMMs are highly sensitive to some types of model misspecification [@kwok_impact_2007], and investigators are faced with many modelling choices, or researchers degrees of freedom [@wicherts_degrees_2016]. When analyzing patients that have been repeatedly measured during a treatment, investigators must decide whether to model subjects' change over time as fixed or varying (random). The issues of treating an effect as constant for all individuals (fixed), or as varying between individuals (random), goes back a long time. For instance, in psycholinguistics @clark_language-as-fixed-effect_1973 coined the term "language-as-fixed-effect fallacy", and @martindale_therapist-as-fixed-effect_1978 soon followed by pointing out the unreasonable assumption that therapists have exactly the same success with their patients ("therapist-as-a-fixed-effect fallacy"). In an influential simulation study @barr_random_2013, recommended to "keep it maximal", i.e. include as many random effects as possible. Others [e.g., @matuschek_balancing_2017] have noted that keeping it maximal might be too conservative, and that investigators need to balance the risk of Type I and II errors.  
+In clinical psychology, and in many other fields, linear mixed-effects models (LMMs) have quickly risen in popularity during the 21st century [@gueorguieva_move_2004]. Their usage in clinical psychology is often motivated by LMMs' ability to include participants with missing data [e.g., @kahn_multilevel_2011]. However, LMMs are highly sensitive to some types of model misspecification [@kwok_impact_2007], and investigators are faced with many modeling choices, or researchers degrees of freedom [@wicherts_degrees_2016]. When analyzing patients that have been repeatedly measured during a treatment, investigators must decide whether to model subjects' change over time as fixed or varying (random). The issues of treating an effect as constant for all individuals (fixed), or as varying between individuals (random), goes back a long time. For instance, in psycholinguistics @clark_language-as-fixed-effect_1973 coined the term "language-as-fixed-effect fallacy", and @martindale_therapist-as-fixed-effect_1978 soon followed by pointing out the unreasonable assumption that therapists have exactly the same success with their patients ("therapist-as-a-fixed-effect fallacy"). In an influential simulation study @barr_random_2013, recommended to "keep it maximal", i.e. include as many random effects as possible. Others [e.g., @matuschek_balancing_2017] have noted that keeping it maximal might be too conservative, and that investigators need to balance the risk of Type I and II errors.  
 
-In this paper we will focus on one of the most basic decision an analyst must make, when analyzing longitudinal treatment data---whether subjects' trajectories over time should be seen as an fixed or random effect. Specifically, this paper focuses on the consequence of ignoring subject-specif varying slopes, on both Type I and II errors.
+In this paper we will focus on one of the most basic decisions an analyst must make, when analyzing longitudinal treatment data---whether subjects' trajectories over time should be seen as a fixed or random effect. Specifically, this paper focuses on the consequences of ignoring subject-specific varying slopes, on both Type I and II errors.
 
 # Methods
 In typical multilevel notation, the simplest case of the two-level model is,
@@ -61,18 +61,18 @@ U_{0j} \\
  \sigma_{u_{01}} & \sigma_{u_1}^2
 \end{matrix}
 \right)
-, \text{ and } R_{ij} \sim\mathcal{N}(0, ~\sigma^2)
+, \text{ and } R_{ij} \sim\mathcal{N}(0, ~\sigma^2).
 \end{equation}
 
 The parameter if interest is $\gamma_{11}$, which is the mean difference in change between the two groups. The aim of this paper is to investigate if accounting for subject-specific slopes ($\sigma_{u_1}^2 > 0$) is important, both when planning the study, or when analyzing the outcome. 
 
 ## Simulation
-To investigated the impact of wrongly omitting a random slope on the risk of committing a Type I error, a Monte Carlo simulation was performed. A parallel group RCT with 11 weekly time points was assumed, with 50 participants in each treatment group. We also assumed, that at baseline there was an equal amount of variance between and within subjects, which would translate to an intraclass correlation of 0.5, if there was no variation between subjects in change over time,  $\sigma_{u_1}^2 = 0$. The simulation consistent of comparing 5 different amounts of random slope variance, $\sigma_{u_1}^2/\sigma^2 = \{0, 0.01, 0.02, 0.03, 0.04\}$. We write the slope variance as a fraction of the error variance, since its the ratio that matters, not the absolute value of, $\sigma_{u_1}^2$.\footnote{Here I use the famous proof: "proof is left as an exercise to the reader", or "It can easily be shown that..." ;)} 
+To investigate the impact of wrongly omitting a random slope on the risk of committing a Type I error, a Monte Carlo simulation was performed. A parallel group RCT with 11 weekly time points was assumed, with 50 participants in each treatment group. We also assumed, that at baseline there was an equal amount of variance between and within subjects, which would translate to an intraclass correlation of 0.5, if there was no variation between subjects in change over time,  $\sigma_{u_1}^2 = 0$. The simulation compared 5 different amounts of random slope variance, $\sigma_{u_1}^2/\sigma^2 = \{0, 0.01, 0.02, 0.03, 0.04\}$. We write the slope variance as a fraction of the error variance, since it is the ratio that matters, not the absolute value of $\sigma_{u_1}^2$.\footnote{Here I use the famous proof: "proof is left as an exercise to the reader", or "It can easily be shown that..." ;)} 
 
-Power was calculated for the same model, assuming a Cohen's *d* of 0.5 (standardized using the pretest standard deviation). Simulations and power calculations were done in R [version 3.4.3; @r_core_team_r:_2017], using *powerlmm* [version 0.2.0; @magnusson_powerlmm:_2018]. LMMs were fit with *lme4* [version 1.1-15; @bates_fitting_2015], using restricted maximum likelihood estimation. For each model 5000 data sets were generated, resulting in a 95 % Monte Carlo CI of 0.044--0.056, for a nominal $\alpha$ of 0.05. The simulation code and additional material is available at: [https://github.com/rpsychologist/open-science-exam](https://github.com/rpsychologist/open-science-exam).
+Power was calculated for the same model, assuming a Cohen's *d* of 0.5 (standardized using the pretest standard deviation). The simulations and power calculations were done in R [version 3.4.3; @r_core_team_r:_2017], using *powerlmm* [version 0.2.0; @magnusson_powerlmm:_2018]. LMMs were fit with *lme4* [version 1.1-15; @bates_fitting_2015], using restricted maximum likelihood estimation. For each model 5000 data sets were generated, resulting in a 95 % Monte Carlo CI of 0.044--0.056, for a nominal $\alpha$ of 0.05. The simulation code and additional materials is available at: [https://github.com/rpsychologist/open-science-exam](https://github.com/rpsychologist/open-science-exam).
 
 # Results
-Figure \@ref(fig:type1-error) shows that ignoring even small amounts of random slope variance quickly leads to Type I errors in the range 0.15 to 0.22. Moreover, Figure \@ref(fig:power-curve) shows that the power of the test is greatly influenced by the assumed amount of random slope variance. For instance for a study with a total of 100 participants, assuming a variance ratio of either 0, 0.01, or 0.02, means power goes from 96 % $\rightarrow$ 72 % $\rightarrow$ 54 %.
+Figure \@ref(fig:type1-error) shows that ignoring even small amounts of random slope variance, quickly leads to Type I errors in the range of 0.15 to 0.22. Moreover, Figure \@ref(fig:power-curve) shows that the power of the test is greatly influenced by the assumed amount of random slope variance. For instance for a study with a total of 100 participants, assuming a variance ratio of either 0, 0.01, or 0.02, means power goes from 96 % $\rightarrow$ 72 % $\rightarrow$ 54 %.
 ```{r, cache = TRUE}
 p <- study_parameters(n1 = 11, 
                       n2 = 50,
@@ -92,14 +92,14 @@ d <- type1 %>%
   mutate(model = factor(model, labels = c("Random intercept & slope", "Random intercept-only")))
 ```
 
-```{r type1-error, fig.cap = "Type I errors for models with different amounts of true slope variance. Nominal levels is 0.05."}
+```{r type1-error, fig.cap = "Type I errors for models with different amounts of true slope variance. The nominal $\\alpha$ level is 0.05, which is shown using a dotted line"}
 ggplot(d, aes(var_ratio, type1, color = model)) + 
   geom_point() + 
   geom_line() +
   labs(x = "Variance ratio \n(random_slope^2/error^2)",
        y = "Type I Error") +
   geom_hline(yintercept = 0.05, linetype = "dotted") +
-  geom_text(aes(label = round(type1, 3)), hjust = 0.5, vjust = -1) + 
+  geom_text(aes(label = round(type1, 3)), hjust = 0.5, vjust = -1, show.legend = FALSE) + 
   coord_cartesian(ylim = c(0, 0.32)) +
   theme_minimal() +
   theme(legend.position = c(0.85, 0.4))
