@@ -1,0 +1,127 @@
+---
+title: "The patient-as-fixed-effect fallacy"
+subtitle: "Consequences for statistical power and Type I errors"
+author: "Kristoffer Magnusson"
+date: "14 Mars 2018 | Examination for the course: 'Open science and reproducible research'"
+output: 
+    revealjs::revealjs_presentation:
+        theme: white
+        transition: none
+        reveal_options:    
+            slideNumber: true
+        css: slides.css
+        self_contained: true
+---
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(tibble)
+library(viridis)
+library(gridExtra)
+library(powerlmm)
+
+p <- study_parameters(n1 = 11,
+                      n2 = 2,
+                      icc_pre_subject = 0.5,
+                      fixed_intercept = 5,
+                      fixed_slope = -.1,
+                      var_ratio = 0
+                      )
+
+# for figures showing the LMMs
+set.seed(4541)
+d <- simulate_data(p)
+set.seed(6541)
+ds <- simulate_data(update(p, var_ratio = 0.02))
+
+dsc <- simulate_data(update(p, var_ratio = 0.02, cor_subject = -0.9))
+dsc_pos <- simulate_data(update(p, var_ratio = 0.02, cor_subject = 0.9))
+```
+
+## Introduction
+* In clinical psychology patients are often repeatedly measured during the treatment period.
+* The data are usually analyzed using linear mixed-effects models (LMMs).
+* Researchers face many degrees of freedoms.
+* Modeling choices influence both Type I and II errors.
+
+## Aim
+* Investigate the consequences of ignoring a random slope on:
+    - Power
+    - Type I errors
+
+## The models
+```{r, echo = FALSE, fig.width=8, fig.height=4, out.width="100%"}
+p <- study_parameters(n1 = 11,
+                      n2 = 2,
+                      icc_pre_subject = 0.9,
+                      fixed_intercept = 5,
+                      fixed_slope = -.1,
+                      var_ratio = 0
+)
+
+set.seed(45441)
+d <- simulate_data(p)
+
+p1 <- ggplot(d, aes(time, y, group = subject, color = factor(subject))) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(linetype = "dashed", alpha = 0.2) +
+  geom_line(aes(y = intercept_subject + slope_subject * time)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+ labs(title = "Random intercept-only") +
+  guides(color = FALSE)
+
+set.seed(6541)
+ds <- simulate_data(update(p, var_ratio = 0.02))
+
+
+p2 <- ggplot(ds, aes(time, y, group = subject, color = factor(subject))) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(linetype = "dashed", alpha = 0.2) +
+  geom_line(aes(y = intercept_subject + slope_subject * time)) +
+  theme_minimal() +
+  scale_color_viridis_d() +
+  labs(title = "Random intercept & slope") +
+  guides(color = FALSE)
+
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+## Type I Errors
+```{r, echo = FALSE, warning=FALSE, message=FALSE, out.width="100%", fig.height=4}
+d <- readRDS("data/type1.rds")
+ggplot(d, aes(var_ratio, type1, color = model)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = "Variance ratio \n(random_slope^2/error^2)",
+       y = "Type I Error") +
+  geom_hline(yintercept = 0.05, linetype = "dotted") +
+  geom_text(aes(label = round(type1, 3)), hjust = 0.5, vjust = -1, show.legend = FALSE) + 
+  coord_cartesian(ylim = c(0, 0.32)) +
+  theme_minimal() +
+  theme(legend.position = c(0.85, 0.4))
+```
+
+
+## Power
+```{r, echo = FALSE, warning=FALSE, message=FALSE, out.width="100%", fig.height=4}
+pcurve <- readRDS("data/pcurve.rds")
+lab <- pcurve %>%
+  filter(tot_n == 100) 
+
+plot(pcurve) + 
+  geom_vline(xintercept = 100, linetype = "dotted") +
+  geom_text(data = lab, aes(label = round(power, 2), group = NA), vjust = -1, show.legend = FALSE) +
+  guides(linetype = "none") +
+  labs(color = "Variance ratio \n(random_slope^2/error^2)", title = NULL) +
+  theme(legend.position = "bottom") +
+  scale_color_viridis_d()
+```
+
+
+## Conclusions
+* Avoid the fallacy of calculating power for a test you never intend to perform.
+* Pre-register your statistical model, or how model selection will be performed (if data-driven).
+
+## Thank you! {.center}
