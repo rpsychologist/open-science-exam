@@ -114,7 +114,7 @@ plot(pcurve) +
   geom_vline(xintercept = 100, linetype = "dotted") +
   geom_text(data = lab, aes(label = round(power, 2), group = NA), vjust = -1, show.legend = FALSE) +
   guides(linetype = "none") +
-  labs(color = "Variance ratio \n(random_slope^2/error^2)", title = NULL) +
+  labs(color = "Variance ratio \n(random_slope^2/error^2)", title = NULL, caption = "Cohen's d = 0.5") +
   theme(legend.position = "bottom") +
   scale_color_viridis_d()
 ```
